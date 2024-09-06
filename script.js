@@ -7,7 +7,7 @@ function obtenerFechaActual() {
 }
 
 // Inicializar el mapa centrado en una ubicación genérica (en caso de fallo en la geolocalización)
-const map = L.map('map').setView([14.6349, -90.5069], 13);
+const map = L.map('map').setView([15.7681, -86.7897], 13);
 
 // Añadir capa de mapa (OpenStreetMap)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
