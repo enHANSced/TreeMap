@@ -18,10 +18,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Crear un icono personalizado para el marcador de árbol
 const treeIcon = L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/489/489969.png', // Reemplaza con la URL de tu imagen de árbol
-    iconSize: [32, 37], // Tamaño del icono
-    iconAnchor: [16, 35], // Punto del icono que se corresponde con la ubicación
-    popupAnchor: [0, -37] // Punto desde el cual se muestra el popup respecto al icono
+    iconUrl: 'recursos/Tree.png', // Reemplaza con la URL de tu imagen de árbol
+    iconSize: [48, 53], // Tamaño del icono
+    iconAnchor: [24, 52], // Punto del icono que se corresponde con la ubicación
+    popupAnchor: [0, -53] // Punto desde el cual se muestra el popup respecto al icono
 });
 
 // Variable para almacenar el marcador
