@@ -9,12 +9,20 @@ function initMap() {
     }).addTo(map);
 }
 
+
+
+// Función para cargar los árboles desde la base de datos
+
 function loadTrees() {
     // Simulación de carga de árboles desde la base de datos
     trees.push({ id: 1, name: "Juan Pérez", account: "20201001", species: "Pino", career: "Informática", date: "16/07/2024" ,lat: 15.7681, lng: -86.7897 });
     trees.push({ id: 2, name: "María García", account: "20201002", species: "Caoba", career: "Derecho", date: "15/04/2023", lat: 15.7700, lng: -86.7920 });
     displayTrees(trees);
 }
+
+
+
+// Función para mostrar los árboles en el mapa y en la lista
 
 function displayTrees(treesToShow) {
     clearMarkers();
@@ -35,10 +43,16 @@ function displayTrees(treesToShow) {
     });
 }
 
+
+
+
 function clearMarkers() {
     markers.forEach(marker => map.removeLayer(marker));
     markers = [];
 }
+
+
+// Funciones para filtrar y buscar árboles
 
 function searchTrees() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -67,6 +81,10 @@ function selectTree(tree, marker) {
     document.getElementById('showRouteBtn').style.display = 'block';
 }
 
+
+
+// Función para mostrar la ruta al árbol seleccionado
+
 function showRoute() {
     if (!selectedTree) {
         alert('Por favor, seleccione un árbol primero.');
@@ -90,6 +108,8 @@ function showRoute() {
         alert('No se pudo obtener su ubicación. Asegúrese de permitir el acceso a la ubicación.');
     });
 }
+
+// Inicialización de la aplicación
 
 window.onload = () => {
     initMap();
