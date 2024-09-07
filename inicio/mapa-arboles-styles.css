@@ -1,0 +1,18 @@
+#map {
+    height: 700px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#treeList {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}

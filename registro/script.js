@@ -18,7 +18,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Crear un icono personalizado para el marcador de árbol
 const treeIcon = L.icon({
-    iconUrl: 'recursos/Tree.png', // Reemplaza con la URL de tu imagen de árbol
+    iconUrl: '../recursos/Tree.png', // Reemplaza con la URL de tu imagen de árbol
     iconSize: [48, 53], // Tamaño del icono
     iconAnchor: [24, 52], // Punto del icono que se corresponde con la ubicación
     popupAnchor: [0, -53] // Punto desde el cual se muestra el popup respecto al icono
@@ -93,6 +93,9 @@ document.getElementById('registro-form').addEventListener('submit', function (e)
     // Añadir información detallada al marcador para mostrar en el mapa
     const popupContent = `<b>${nombre}</b> • ${carrera}<br>${especie}<br><b>Sembrado el:</b> ${new Date(fecha).toLocaleString()}`;
     marker.bindPopup(popupContent).openPopup();
+
+    // Navegar a la pagina mapa-arboles.html
+    window.location.href = 'inicio/mapa-arboles.html';
 
     // Limpiar formulario
     document.getElementById('registro-form').reset();
