@@ -3,16 +3,25 @@
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 const db = window.db;
 
+// Variables globales
 let map, markers = [], routing;
 const trees = []; // Aquí se cargarán los árboles desde la base de datos
 let selectedTree = null;
 
+// Función para inicializar el mapa
 function initMap() {
     map = L.map('map').setView([15.7681, -86.7897], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 }
+
+
+
+
+
+
+
 
 
 // Función para cargar los árboles desde la base de datos
@@ -30,6 +39,14 @@ async function loadTrees() {
         console.error("Error al cargar los árboles: ", error);
     }
 }
+
+
+
+
+
+
+
+
 
 //icono personalizado para el marcador de árbol
 const treeIcon = L.icon({
@@ -128,6 +145,11 @@ function filterByDate(treeDate, filter) {
 
 
 
+
+
+
+
+
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
@@ -137,8 +159,8 @@ function selectTree(tree, marker) {
 }
 
 
-// Función para mostrar la ruta al árbol seleccionado
 
+// Función para mostrar la ruta al árbol seleccionado
 function showRoute() {
     if (!selectedTree) {
         alert('Por favor, seleccione un árbol primero.');
@@ -162,6 +184,9 @@ function showRoute() {
         alert('No se pudo obtener su ubicación. Asegúrese de permitir el acceso a la ubicación.');
     });
 }
+
+
+
 
 // Inicialización de la aplicación
 document.addEventListener('DOMContentLoaded', () => {
