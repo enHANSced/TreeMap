@@ -1,3 +1,8 @@
+
+// Referencia a la base de datos de Firebase
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+const db = window.db;
+
 let map, markers = [], routing;
 const trees = []; // Aquí se cargarán los árboles desde la base de datos
 let selectedTree = null;
@@ -10,32 +15,36 @@ function initMap() {
 }
 
 
-
 // Función para cargar los árboles desde la base de datos
-
-function loadTrees() {
-    // Simulación de carga de árboles desde la base de datos
-    trees.push({ id: 1, name: "Juan Pérez", account: "20201001", species: "Pino", career: "Informática", date: "16/07/2024" ,lat: 15.7681, lng: -86.7897 });
-    trees.push({ id: 2, name: "María García", account: "20201002", species: "Caoba", career: "Derecho", date: "15/04/2023", lat: 15.7700, lng: -86.7920 });
-    displayTrees(trees);
+async function loadTrees() {
+    try {
+        const querySnapshot = await getDocs(collection(db, 'tree'));
+        querySnapshot.forEach(doc => {
+            const tree = doc.data();
+            console.log(tree);
+            tree.id = doc.id;
+            trees.push(tree);
+        });
+        displayTrees(trees);
+    } catch (error) {
+        console.error("Error al cargar los árboles: ", error);
+    }
 }
 
 
-
 // Función para mostrar los árboles en el mapa y en la lista
-
 function displayTrees(treesToShow) {
     clearMarkers();
     const treeList = document.getElementById('treeList');
     treeList.innerHTML = '';
     treesToShow.forEach(tree => {
-        const marker = L.marker([tree.lat, tree.lng]).addTo(map);
-        marker.bindPopup(`<b>${tree.name}</b><br>${tree.species}<br>Sembrado el ${tree.date}`);
+        const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude]).addTo(map);
+        marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br>Sembrado el ${tree.fecha.toDate().toLocaleDateString()}`);
         markers.push(marker);
 
         const treeItem = document.createElement('a');
         treeItem.className = 'list-group-item list-group-item-action';
-        treeItem.innerHTML = `<strong>${tree.name}</strong> (${tree.account})<br>${tree.species} - ${tree.career}`;
+        treeItem.innerHTML = `<strong>${tree.nombre}</strong> (${tree.cuenta})<br>${tree.especie} - ${tree.carrera}`;
         treeItem.onclick = () => {
             selectTree(tree, marker);
         };
@@ -44,43 +53,80 @@ function displayTrees(treesToShow) {
 }
 
 
-
-
 function clearMarkers() {
     markers.forEach(marker => map.removeLayer(marker));
     markers = [];
 }
 
 
-// Funciones para filtrar y buscar árboles
 
+
+
+
+// Función para buscar árboles
 function searchTrees() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const filteredTrees = trees.filter(tree =>
-        tree.name.toLowerCase().includes(searchTerm) || tree.account.includes(searchTerm)
+        tree.nombre.toLowerCase().includes(searchTerm) || tree.cuenta.includes(searchTerm)
     );
     displayTrees(filteredTrees);
 }
 
+// Función para aplicar los filtros
 function applyFilters() {
     const speciesFilter = document.getElementById('speciesFilter').value;
     const careerFilter = document.getElementById('careerFilter').value;
+    const dateFilter = document.getElementById('dateFilter').value;
 
-    const filteredTrees = trees.filter(tree =>
-        (speciesFilter === '' || tree.species === speciesFilter) &&
-        (careerFilter === '' || tree.career === careerFilter)
-    );
+    const filteredTrees = trees.filter(tree => {
+        const matchesSpecies = speciesFilter === '' || tree.especie === speciesFilter;
+        const matchesCareer = careerFilter === '' || tree.carrera === careerFilter;
+        const matchesDate = dateFilter === '' || filterByDate(tree.fecha.toDate(), dateFilter);
+        return matchesSpecies && matchesCareer && matchesDate;
+    });
 
     displayTrees(filteredTrees);
 }
 
-function selectTree(tree, marker) {
-    selectedTree = tree;
-    map.setView([tree.lat, tree.lng], 15);
-    marker.openPopup();
-    document.getElementById('showRouteBtn').style.display = 'block';
+// Hacer las funciones disponibles globalmente
+window.searchTrees = searchTrees;
+window.applyFilters = applyFilters;
+
+
+// Función para filtrar por fecha
+function filterByDate(treeDate, filter) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    switch (filter) {
+        case 'today':
+            return treeDate >= today;
+        case 'yesterday':
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            return treeDate >= yesterday && treeDate < today;
+        case 'last_week':
+            const lastWeek = new Date(today);
+            lastWeek.setDate(today.getDate() - 7);
+            return treeDate >= lastWeek;
+        case 'last_month':
+            const lastMonth = new Date(today);
+            lastMonth.setMonth(today.getMonth() - 1);
+            return treeDate >= lastMonth;
+        default:
+            return true;
+    }
 }
 
+
+
+// Función para seleccionar un árbol y centrar el mapa en su ubicación
+function selectTree(tree, marker) {
+    selectedTree = tree;
+    map.setView(marker.getLatLng(), 17);
+    marker.openPopup();
+    document.getElementById('showRouteBtn').style.display = 'block'; 
+}
 
 
 // Función para mostrar la ruta al árbol seleccionado
@@ -110,9 +156,10 @@ function showRoute() {
 }
 
 // Inicialización de la aplicación
-
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
     initMap();
     loadTrees();
     document.getElementById('showRouteBtn').addEventListener('click', showRoute);
-};
+});
+
+

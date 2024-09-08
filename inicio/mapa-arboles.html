@@ -15,10 +15,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Mapa de Árboles</a>
+            <a class="navbar-brand" href="#">Mapa de Árboles Sembrados</a>
             <a href="../index.html" class="btn btn-primary mt-2">Volver al Inicio</a>
         </div>
-        
+
     </nav>
 
     <div class="container mt-4">
@@ -59,6 +59,13 @@
                             <option value="Recursos Humanos">Recursos Humanos</option>
                             <option value="Economía">Economía</option>
                         </select>
+                        <select id="dateFilter" class="form-select mb-2">
+                            <option value="">Todas las fechas</option>
+                            <option value="today">Hoy</option>
+                            <option value="yesterday">Ayer</option>
+                            <option value="last_week">Última semana</option>
+                            <option value="last_month">Último mes</option>
+                        </select>
                         <button onclick="applyFilters()" class="btn btn-primary">Aplicar Filtros</button>
                     </div>
                 </div>
@@ -80,7 +87,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.min.js"></script>
-    <script src="mapa-arboles-script.js"></script>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGfPnSMelSuuRiQQqBVkqwEAHPpZ9JlJ8",
+            authDomain: "tree-map-33daf.firebaseapp.com",
+            projectId: "tree-map-33daf",
+            storageBucket: "tree-map-33daf.appspot.com",
+            messagingSenderId: "1041629479938",
+            appId: "1:1041629479938:web:286179606e8074aac2931b"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make db available globally
+        window.db = db;
+    </script>
+
+    <script type="module" src="mapa-arboles-script.js"></script>
 </body>
 
 </html>
