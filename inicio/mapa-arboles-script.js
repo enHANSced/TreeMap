@@ -31,6 +31,14 @@ async function loadTrees() {
     }
 }
 
+//icono personalizado para el marcador de árbol
+const treeIcon = L.icon({
+    iconUrl: '../recursos/tree-pin.svg', // Reemplaza con la URL de tu imagen de árbol
+    iconSize: [64, 60], // Tamaño del icono
+    iconAnchor: [24, 60], // Punto del icono que se corresponde con la ubicación
+    popupAnchor: [0, -60] // Punto desde el cual se muestra el popup respecto al icono
+});
+
 
 // Función para mostrar los árboles en el mapa y en la lista
 function displayTrees(treesToShow) {
@@ -38,7 +46,7 @@ function displayTrees(treesToShow) {
     const treeList = document.getElementById('treeList');
     treeList.innerHTML = '';
     treesToShow.forEach(tree => {
-        const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude]).addTo(map);
+        const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], {icon: treeIcon}).addTo(map);
         marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br>Sembrado el ${tree.fecha.toDate().toLocaleDateString()}`);
         markers.push(marker);
 

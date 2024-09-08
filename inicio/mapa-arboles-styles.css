@@ -1,5 +1,5 @@
 #map {
-    height: 700px;
+    height: 740px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
@@ -15,4 +15,32 @@
 
 .list-group-item:hover {
     background-color: #f8f9fa;
+}
+
+#treeList {
+    max-height: 290px;
+    /* Ajusta esta altura según el tamaño de tus elementos */
+    overflow-y: auto;
+}
+
+/* Personalizar la barra de desplazamiento */
+#treeList::-webkit-scrollbar {
+    width: 12px;
+    /* Ancho de la barra de desplazamiento */
+}
+
+#treeList::-webkit-scrollbar-thumb {
+    background-color: #04b36157;
+    /* Color del pulgar de la barra de desplazamiento */
+    border-radius: 10px;
+    /* Bordes redondeados del pulgar */
+    border: 3px solid #ffffff;
+    /* Espacio alrededor del pulgar */
+}
+
+#treeList::-webkit-scrollbar-track {
+    background-color: #eeeeee;
+    /* Color de la pista de la barra de desplazamiento */
+    border-radius: 10px;
+    /* Bordes redondeados de la pista */
 }

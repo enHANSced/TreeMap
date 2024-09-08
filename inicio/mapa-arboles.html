@@ -15,8 +15,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Mapa de Árboles Sembrados</a>
-            <a href="../index.html" class="btn btn-primary mt-2">Volver al Inicio</a>
+            <b><a class="navbar-brand" href="#">Mapa de Árboles Sembrados</a></b>
+            <div class="col-md-6">
+                <div class="input-group mb-6">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o numero de cuenta">
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchTrees()">Buscar</button>
+                </div>
+            </div>
+            <a href="../index.html" class="btn btn-success">Volver al Inicio</a>
         </div>
 
     </nav>
@@ -24,17 +30,6 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Búsqueda</h5>
-                        <div class="input-group mb-3">
-                            <input type="text" id="searchInput" class="form-control"
-                                placeholder="Buscar por nombre o cuenta">
-                            <button class="btn btn-outline-secondary" type="button"
-                                onclick="searchTrees()">Buscar</button>
-                        </div>
-                    </div>
-                </div>
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Filtros</h5>
@@ -66,12 +61,13 @@
                             <option value="last_week">Última semana</option>
                             <option value="last_month">Último mes</option>
                         </select>
-                        <button onclick="applyFilters()" class="btn btn-primary">Aplicar Filtros</button>
+                        <button onclick="applyFilters()" class="btn btn-outline-success">Aplicar Filtros</button>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card card-secondary card-outline">
                     <div class="card-body">
                         <h5 class="card-title">Lista de Árboles</h5>
+                        <p class="card-subtitle mb-2 text-muted">Haz click en un árbol para ubicarlo</p>
                         <div id="treeList" class="list-group"></div>
                     </div>
                 </div>

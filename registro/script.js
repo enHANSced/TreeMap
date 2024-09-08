@@ -24,7 +24,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Crear un icono personalizado para el marcador de árbol
 const treeIcon = L.icon({
-    iconUrl: '../recursos/Tree.png', // Reemplaza con la URL de tu imagen de árbol
+    iconUrl: '../recursos/plant.svg', // Reemplaza con la URL de tu imagen de árbol
     iconSize: [48, 53], // Tamaño del icono
     iconAnchor: [24, 52], // Punto del icono que se corresponde con la ubicación
     popupAnchor: [0, -53] // Punto desde el cual se muestra el popup respecto al icono
