@@ -19,8 +19,6 @@ function initMap() {
 
 
 
-
-
 // Función para cargar los árboles desde la base de datos
 async function loadTrees() {
     try {
@@ -36,7 +34,6 @@ async function loadTrees() {
         console.error("Error al cargar los árboles: ", error);
     }
 }
-
 
 
 
@@ -88,8 +85,6 @@ function clearMarkers() {
     markers.forEach(marker => map.removeLayer(marker));
     markers = [];
 }
-
-
 
 
 
