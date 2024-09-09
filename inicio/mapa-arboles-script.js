@@ -63,9 +63,21 @@ function displayTrees(treesToShow) {
     const treeList = document.getElementById('treeList');
     treeList.innerHTML = '';
     treesToShow.forEach(tree => {
-        const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], {icon: treeIcon}).addTo(map);
-        marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br>Sembrado el ${tree.fecha.toDate().toLocaleDateString()}`);
-        markers.push(marker);
+        const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], { icon: treeIcon }).addTo(map);
+        // Agregar un popup al marcador
+        marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br><b>Sembrado el</b> ${getFormattedDate(tree.fecha.toDate())} a las ${getFormattedTime(tree.fecha.toDate())}`);
+
+        // Función para obtener la fecha formateada
+        function getFormattedDate(date) {
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('es', options);
+        }
+
+        // Función para obtener la hora formateada
+        function getFormattedTime(date) {
+            const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+            return date.toLocaleTimeString('en-US', options);
+        } markers.push(marker);
 
         const treeItem = document.createElement('a');
         treeItem.className = 'list-group-item list-group-item-action';
@@ -153,7 +165,7 @@ function filterByDate(treeDate, filter) {
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
-    map.setView(marker.getLatLng(), 17);
+    map.flyTo(marker.getLatLng(), 17, {animate: true, duration: 1.2}); // Utiliza flyTo en lugar de setView para un centrado suave
     marker.openPopup();
     document.getElementById('showRouteBtn').style.display = 'block'; 
 }
