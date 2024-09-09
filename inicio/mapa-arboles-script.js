@@ -39,6 +39,7 @@ async function loadTrees() {
 
 
 
+
 //icono personalizado para el marcador de árbol
 const treeIcon = L.icon({
     iconUrl: '../recursos/tree-pin.svg', // Reemplaza con la URL de tu imagen de árbol
@@ -85,6 +86,8 @@ function clearMarkers() {
     markers.forEach(marker => map.removeLayer(marker));
     markers = [];
 }
+
+
 
 
 
@@ -180,6 +183,35 @@ function filterByDate(treeDate, filter) {
 
 
 
+// Función para buscar árboles en tiempo real
+function liveSearchTrees() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const filteredTrees = trees.filter(tree => {
+        const cuentaStr = tree.cuenta.toString(); // Convertir `cuenta` a string
+        return tree.nombre.toLowerCase().includes(searchTerm) || cuentaStr.includes(searchTerm);
+    });
+    displayTrees(filteredTrees);
+}
+
+
+// Función para limpiar el campo de búsqueda
+function clearSearch() {
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    liveSearchTrees(); // Actualiza la lista para mostrar todos los árboles
+    map.setView([15.7681, -86.7897], 13, { animate: true, duration: 2 }); // Centra el mapa en la posición inicial
+    document.getElementById('clearSearch').style.display = 'none'; // Oculta el botón de borrar
+}
+
+// Función para mostrar u ocultar el botón de limpiar
+function toggleClearButton() {
+    const clearButton = document.getElementById('clearSearch');
+    clearButton.style.display = document.getElementById('searchInput').value ? 'inline-block' : 'none';
+}
+
+
+
+
 
 
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
@@ -217,32 +249,6 @@ function showRoute() {
     });
 }
 
-
-// Función para buscar árboles en tiempo real
-function liveSearchTrees() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const filteredTrees = trees.filter(tree => {
-        const cuentaStr = tree.cuenta.toString(); // Convertir `cuenta` a string
-        return tree.nombre.toLowerCase().includes(searchTerm) || cuentaStr.includes(searchTerm);
-    });
-    displayTrees(filteredTrees);
-}
-
-
-// Función para limpiar el campo de búsqueda
-function clearSearch() {
-    const searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-    liveSearchTrees(); // Actualiza la lista para mostrar todos los árboles
-    map.setView([15.7681, -86.7897], 13, {animate:true, duration:2}); // Centra el mapa en la posición inicial
-    document.getElementById('clearSearch').style.display = 'none'; // Oculta el botón de borrar
-}
-
-// Función para mostrar u ocultar el botón de limpiar
-function toggleClearButton() {
-    const clearButton = document.getElementById('clearSearch');
-    clearButton.style.display = document.getElementById('searchInput').value ? 'inline-block' : 'none';
-}
 
 
 
