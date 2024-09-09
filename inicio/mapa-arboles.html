@@ -19,7 +19,8 @@
             <div class="col-md-6">
                 <div class="input-group mb-6">
                     <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o número de cuenta">
-                    <button class="btn btn-outline-secondary" type="button" onclick="searchTrees()">Buscar</button>
+                    <button class="btn btn-outline-secondary" type="button" id="clearSearch" style="display: none;">✕</button>
+                    <button class="btn btn-secondary" type="button" onclick="">Buscar</button>
                 </div>
             </div>
             <a href="../index.html" class="btn btn-success">Volver al Inicio</a>
@@ -61,7 +62,10 @@
                             <option value="last_week">Última semana</option>
                             <option value="last_month">Último mes</option>
                         </select>
-                        <button onclick="applyFilters()" class="btn btn-outline-success">Aplicar Filtros</button>
+                        <div class="d-flex justify-content-between">
+                            <button onclick="applyFilters()" class="btn btn-outline-success">Aplicar Filtros</button>
+                            <button id="resetFiltersBtn" class="btn btn-outline-danger" style="display: none;" onclick="resetFilters()">Restablecer</button>
+                        </div>
                     </div>
                 </div>
                 <div class="card bg-light">

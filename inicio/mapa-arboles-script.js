@@ -1,6 +1,6 @@
 
 // Referencia a la base de datos de Firebase
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 const db = window.db;
 
 // Variables globales
@@ -15,9 +15,6 @@ function initMap() {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 }
-
-
-
 
 
 
@@ -39,9 +36,6 @@ async function loadTrees() {
         console.error("Error al cargar los árboles: ", error);
     }
 }
-
-
-
 
 
 
@@ -104,10 +98,42 @@ function clearMarkers() {
 function searchTrees() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const filteredTrees = trees.filter(tree =>
-        tree.nombre.toLowerCase().includes(searchTerm) || tree.cuenta.includes(searchTerm)
+        tree.nombre.toLowerCase().includes(searchTerm)
     );
     displayTrees(filteredTrees);
 }
+
+
+
+// Función para aplicar los filtros
+
+document.getElementById('speciesFilter').addEventListener('change', showResetButton);
+document.getElementById('careerFilter').addEventListener('change', showResetButton);
+document.getElementById('dateFilter').addEventListener('change', showResetButton);
+
+function showResetButton() {
+    const speciesFilter = document.getElementById('speciesFilter').value;
+    const careerFilter = document.getElementById('careerFilter').value;
+    const dateFilter = document.getElementById('dateFilter').value;
+
+    if (speciesFilter || careerFilter || dateFilter) {
+        document.getElementById('resetFiltersBtn').style.display = 'block';
+    } else {
+        document.getElementById('resetFiltersBtn').style.display = 'none';
+    }
+}
+
+function resetFilters() {
+    document.getElementById('speciesFilter').value = '';
+    document.getElementById('careerFilter').value = '';
+    document.getElementById('dateFilter').value = '';
+    document.getElementById('resetFiltersBtn').style.display = 'none';
+    applyFilters(); // Reaplicar los filtros para mostrar todos los árboles
+    map.setView([15.7681, -86.7897], 13, { animate: true, duration: 2 }); // Centra el mapa en la posición inicial
+}
+
+
+
 
 // Función para aplicar los filtros
 function applyFilters() {
@@ -128,6 +154,7 @@ function applyFilters() {
 // Hacer las funciones disponibles globalmente
 window.searchTrees = searchTrees;
 window.applyFilters = applyFilters;
+window.resetFilters = resetFilters;
 
 
 // Función para filtrar por fecha
@@ -154,8 +181,6 @@ function filterByDate(treeDate, filter) {
             return true;
     }
 }
-
-
 
 
 
@@ -198,12 +223,44 @@ function showRoute() {
 }
 
 
+// Función para buscar árboles en tiempo real
+function liveSearchTrees() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const filteredTrees = trees.filter(tree => {
+        const cuentaStr = tree.cuenta.toString(); // Convertir `cuenta` a string
+        return tree.nombre.toLowerCase().includes(searchTerm) || cuentaStr.includes(searchTerm);
+    });
+    displayTrees(filteredTrees);
+}
+
+
+// Función para limpiar el campo de búsqueda
+function clearSearch() {
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    liveSearchTrees(); // Actualiza la lista para mostrar todos los árboles
+    map.setView([15.7681, -86.7897], 13, {animate:true, duration:2}); // Centra el mapa en la posición inicial
+    document.getElementById('clearSearch').style.display = 'none'; // Oculta el botón de borrar
+}
+
+// Función para mostrar u ocultar el botón de limpiar
+function toggleClearButton() {
+    const clearButton = document.getElementById('clearSearch');
+    clearButton.style.display = document.getElementById('searchInput').value ? 'inline-block' : 'none';
+}
+
 
 
 // Inicialización de la aplicación
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
     loadTrees();
+    document.getElementById('searchInput').addEventListener('input', () => {
+        liveSearchTrees();
+        toggleClearButton(); // Muestra u oculta el botón de borrar
+    });
+    document.getElementById('clearSearch').addEventListener('click', clearSearch);
+    // Agregar un evento al botón de mostrar ruta
     document.getElementById('showRouteBtn').addEventListener('click', showRoute);
 });
 
