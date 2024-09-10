@@ -119,6 +119,28 @@ function searchTrees() {
 
 
 
+
+
+// Función para cambiar el icono de filtro al expandir o contraer
+document.addEventListener('DOMContentLoaded', function () {
+    var filterContent = document.getElementById('filterContent');
+    var filterIcon = document.getElementById('filterIcon');
+
+    filterContent.addEventListener('show.bs.collapse', function () {
+        filterIcon.classList.remove('bi-chevron-down');
+        filterIcon.classList.add('bi-chevron-up');
+    });
+
+    filterContent.addEventListener('hide.bs.collapse', function () {
+        filterIcon.classList.remove('bi-chevron-up');
+        filterIcon.classList.add('bi-chevron-down');
+    });
+});
+
+
+
+
+
 // Función para aplicar los filtros
 
 document.getElementById('speciesFilter').addEventListener('change', showResetButton);
