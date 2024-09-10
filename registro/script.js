@@ -53,27 +53,39 @@ function agregarMarcador(coords) {
 }
 
 // Centrar el mapa y agregar un marcador en la ubicación actual del usuario
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const { latitude, longitude } = position.coords;
-            const currentCoords = { lat: latitude, lng: longitude };
-            map.setView(currentCoords, 14); // Centrar y ajustar el zoom
-            agregarMarcador(currentCoords); // Agregar el marcador en la ubicación actual
-        },
-        () => {
-            console.warn("No se pudo obtener la ubicación actual.");
-        }
-    );
-} else {
-    console.warn("La geolocalización no es soportada por este navegador.");
+function centrarEnUbicacionActual() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                const currentCoords = { lat: latitude, lng: longitude };
+                map.setView(currentCoords, 14); // Centrar y ajustar el zoom
+                agregarMarcador(currentCoords); // Agregar el marcador en la ubicación actual
+            },
+            () => {
+                console.warn("No se pudo obtener la ubicación actual.");
+            }
+        );
+    } else {
+        console.warn("La geolocalización no es soportada por este navegador.");
+    }
 }
+
+// Llamar a la función para centrar en la ubicación actual al cargar la página
+centrarEnUbicacionActual();
 
 // Manejo del click en el mapa para actualizar el marcador
 map.on('click', function (e) {
     const coords = e.latlng; // Obtener coordenadas de la ubicación seleccionada
     agregarMarcador(coords); // Agregar o actualizar el marcador en la nueva ubicación
 });
+
+// Agregar el botón para centrar en la ubicación actual
+L.easyButton('bi bi-crosshair', function (btn, map) {
+    centrarEnUbicacionActual();
+}, 'Centrar en mi ubicación actual').addTo(map);
+
+
 
 // Manejo del formulario de registro
 document.getElementById('registro-form').addEventListener('submit', async function (e) {
