@@ -18,7 +18,7 @@
 }
 
 #treeList {
-    max-height: 290px;
+    max-height: 530px;
     /* Ajusta esta altura según el tamaño de tus elementos */
     overflow-y: auto;
 }
