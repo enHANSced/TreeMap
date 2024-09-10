@@ -1,7 +1,10 @@
+// Importar Firebase Storage
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
 // Referencia a la base de datos de Firebase
-import { getFirestore, collection, addDoc, Timestamp, GeoPoint } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { collection, addDoc, Timestamp, GeoPoint } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 const db = window.db;
+const storage = getStorage();
 
 
 // Obtener la fecha y hora actual en formato compatible con input datetime-local
@@ -20,6 +23,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© OpenStreetMap'
 }).addTo(map);
+
 
 
 // Crear un icono personalizado para el marcador de árbol
@@ -54,7 +58,7 @@ if (navigator.geolocation) {
         (position) => {
             const { latitude, longitude } = position.coords;
             const currentCoords = { lat: latitude, lng: longitude };
-            map.setView(currentCoords, 15); // Centrar y ajustar el zoom
+            map.setView(currentCoords, 14); // Centrar y ajustar el zoom
             agregarMarcador(currentCoords); // Agregar el marcador en la ubicación actual
         },
         () => {
@@ -97,16 +101,32 @@ document.getElementById('registro-form').addEventListener('submit', async functi
     // Obtener las coordenadas del marcador
     const coords = marker.coords;
 
+    // Obtener el archivo de imagen
+    const imagenInput = document.getElementById('imagen');
+    const imagenArchivo = imagenInput.files[0];
+
+    // Verificar si se seleccionó una imagen
+    if (!imagenArchivo) {
+        alert('Por favor, selecciona una imagen del árbol.');
+        return;
+    }
+
+    // Subir la imagen a Firebase Storage y obtener la URL
+    const imagenRef = ref(storage, `imagenes/${imagenArchivo.name}`);
 
     // Registrar en Firebase
     try {
+        await uploadBytes(imagenRef, imagenArchivo);
+        const imagenURL = await getDownloadURL(imagenRef);
+        //Registrar en Firestore
         const docRef = await addDoc(collection(db, "tree"), {
             nombre,
             cuenta,
             carrera,
             especie,
             fecha: Timestamp.fromDate(new Date(fecha)),
-            ubicacion: new GeoPoint(coords[0], coords[1])
+            ubicacion: new GeoPoint(coords[0], coords[1]),
+            imagenURL
         });
         console.log("Document written with ID: ", docRef.id);
 
@@ -161,3 +181,4 @@ L.Control.geocoder({
     geocoder: geocoder,
     placeholder: 'Buscar ubicación...'
 }).addTo(map);
+

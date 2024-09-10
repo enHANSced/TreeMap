@@ -57,9 +57,21 @@ function displayTrees(treesToShow) {
     treeList.innerHTML = '';
     treesToShow.forEach(tree => {
         const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], { icon: treeIcon }).addTo(map);
+
+        const imageUrl = tree.imagenURL || '../recursos/default-tree.svg'; // Reemplaza con la URL de tu imagen por defecto
+
         // Agregar un popup al marcador
-        marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br><b>Sembrado el</b> ${getFormattedDate(tree.fecha.toDate())} a las ${getFormattedTime(tree.fecha.toDate())}<br>
-        <button class="btn btn-success btn-sm mt-1" onclick="showRoute()">Mostrar Ruta</button>`);
+        marker.bindPopup(`
+    <div class="popup-content">
+        <div class="popup-image-container">
+            <img src="${imageUrl}" alt="Imagen del árbol" class="tree-image" onclick="showImageModal('${imageUrl}')">
+        </div>
+        <div class="popup-text">
+            <b>${tree.nombre}</b><br>${tree.especie}<br><b>Sembrado el</b> ${getFormattedDate(tree.fecha.toDate())} a las ${getFormattedTime(tree.fecha.toDate())}<br>
+            <button class="btn btn-success btn-sm mt-1" onclick="showRoute()">Mostrar Ruta</button>
+        </div>
+    </div>
+`);
         marker.on('click', () => { selectMarker(tree, marker); });
 
 
@@ -98,6 +110,23 @@ function displayTrees(treesToShow) {
         treeList.appendChild(treeItem);
     });
 }
+
+
+// Función para mostrar la imagen en un modal
+function showImageModal(imageUrl) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modal.style.display = 'block';
+    modalImg.src = imageUrl;
+}
+
+// Función para cerrar el modal
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+}
+
+
 
 
 function clearMarkers() {
@@ -339,6 +368,8 @@ window.applyFilters = applyFilters;
 window.resetFilters = resetFilters;
 window.hideRoute = hideRoute;
 window.showRoute = showRoute;
+window.showImageModal = showImageModal;
+window.closeModal = closeModal;
 
 
 

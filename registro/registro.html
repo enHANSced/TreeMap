@@ -22,56 +22,67 @@
 
     <div class="container mt-4">
 
-        <h1 class="text-center">Mapa de Siembra de Árboles</h1>
+        <h1 class="text-center">Registremos tu Árbol</h1>
 
         <!-- Formulario de Registro -->
         <form id="registro-form">
-            <div class="form-group">
-                <label for="nombre">Nombre del Estudiante:</label>
-                <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre" required>
-            </div>
-            <div class="form-group">
-                <label for="cuenta">Número de Cuenta:</label>
-                <input type="number" class="form-control" id="cuenta" placeholder="Ingresa tu número de cuenta"
-                    required>
-            </div>
-            <div class="form-group">
-                <label for="carrera">Carrera:</label>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="nombre">Nombre del Estudiante:</label>
+                    <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="cuenta">Número de Cuenta:</label>
+                    <input type="number" class="form-control" id="cuenta" placeholder="Ingresa tu número de cuenta"
+                        required>
+                </div>
 
-                <select class="form-control" id="carrera" aria-label="Carrera del estudiante" required>
-                    <option selected>Selecciona tu carrera</option>
-                    <option value="1">Informática</option>
-                    <option value="2">Gestión Logística</option>
-                    <option value="3">Administración de Empresas</option>
-                    <option value="4">Derecho</option>
-                    <option value="5">Contaduría Pública y Finanzas</option>
-                    <option value="6">Diseño Gráfico</option>
-                    <option value="7">Psicología</option>
-                    <option value="8">Mercadotecnia</option>
-                    <option value="9">Recursos Humanos</option>
-                    <option value="10">Economía</option>
-                </select>
+                <div class="form-group col-md-4">
+                    <label for="carrera">Carrera:</label>
+
+                    <select class="form-control" id="carrera" aria-label="Carrera del estudiante" required>
+                        <option selected>Selecciona tu carrera</option>
+                        <option value="1">Informática</option>
+                        <option value="2">Gestión Logística</option>
+                        <option value="3">Administración de Empresas</option>
+                        <option value="4">Derecho</option>
+                        <option value="5">Contaduría Pública y Finanzas</option>
+                        <option value="6">Diseño Gráfico</option>
+                        <option value="7">Psicología</option>
+                        <option value="8">Mercadotecnia</option>
+                        <option value="9">Recursos Humanos</option>
+                        <option value="10">Economía</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="especie">Especie del Árbol:</label>
-                <select class="form-control" id="especie" placeholder="Especie del árbol sembrado">
-                    <option value="0">Desconocido</option>
-                    <option value="1">Pino</option>
-                    <option value="2">Caoba</option>
-                    <option value="3">Cedro</option>
-                    <option value="4">Roble</option>
-                    <option value="5">Cortés</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="fecha">Fecha y Hora de Siembra:</label>
-                <input type="datetime-local" class="form-control" id="fecha" required>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="especie">Especie del Árbol:</label>
+                    <select class="form-control" id="especie" placeholder="Especie del árbol sembrado">
+                        <option value="0">Desconocido</option>
+                        <option value="1">Pino</option>
+                        <option value="2">Caoba</option>
+                        <option value="3">Cedro</option>
+                        <option value="4">Roble</option>
+                        <option value="5">Cortés</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="fecha">Fecha y Hora de Siembra:</label>
+                    <input type="datetime-local" class="form-control" id="fecha" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="imagen">Imagen del Árbol:</label>
+                    <input type="file" class="form-control" id="imagen" accept="image/*" capture="camera">
+                </div>
             </div>
 
-            <p class="mt-2">Haz clic en el mapa para seleccionar la ubicación de tu árbol.</p>
+            <p class="mt-2"><b>Esta es tu ubicación actual.</b><br><i> Haz click en el mapa para seleccionar una diferente.</i></p>
+
 
             <!-- Mapa de Leaflet -->
-            <div id="map"></div>
+            <div id="map">
+            </div>
 
             <div class="d-flex justify-content-between">
                 <!-- Botón de Volver -->
