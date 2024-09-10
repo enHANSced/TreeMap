@@ -68,12 +68,12 @@ function displayTrees(treesToShow) {
             selectedTree = tree;
             map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.5 }); // Utiliza flyTo en lugar de setView para un centrado suave
             marker.openPopup();
-            document.getElementById('showRouteBtn').style.display = 'block';
+            //document.getElementById('showRouteBtn').style.display = 'block';
         }
 
         // Detectar cuando se cierra el popup
         marker.on('popupclose', () => {
-            document.getElementById('showRouteBtn').style.display = 'none';
+            //document.getElementById('showRouteBtn').style.display = 'none';
             map.flyTo([15.7681, -86.7897], 13, { animate: true, duration: 0.5 });
         });
 
@@ -236,9 +236,9 @@ function toggleClearButton() {
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
-    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 1.2 }); // Utiliza flyTo en lugar de setView para un centrado suave
+    map.flyTo(marker.getLatLng(), 16, { animate: true, duration: 1.2 }); // Utiliza flyTo en lugar de setView para un centrado suave
     marker.openPopup();
-    document.getElementById('showRouteBtn').style.display = 'block';
+    //document.getElementById('showRouteBtn').style.display = 'block';
 }
 
 
@@ -281,20 +281,23 @@ function showRoute() {
             draggableWaypoints: false,
             fitSelectedRoutes: true,
             language: 'es',
+            collapsible: true, // Mostrar el panel de indicaciones colapsado
             createMarker: function (i, wp) {
                 if (i === 0) {
                     return L.marker(wp.latLng).bindPopup('Ubicación actual');
                 } else {
-                    return L.marker(wp.latLng, {
+                    const treeMarker = L.marker(wp.latLng, {
                         icon: treeIcon
                     }).bindPopup(`<b>${selectedTree.nombre}</b><br>${selectedTree.especie}<br><b>Sembrado el</b> ${selectedTree.fecha.toDate().toLocaleDateString()} a las ${selectedTree.fecha.toDate().toLocaleTimeString()}
-                    <br><button class="btn btn-danger btn-sm mt-1" onclick="hideRoute()">Ocultar Ruta</button>`);
+            <br><button class="btn btn-danger btn-sm mt-1" onclick="hideRoute()">Ocultar Ruta</button>`);
+                    treeMarker.openPopup(); // Abre el popup por defecto
+                    return treeMarker;
                 }
             },
         }).addTo(map);
 
+
         // Mostrar el botón de "Ocultar Ruta" y ocultar el de "Mostrar Ruta"
-        document.getElementById('showRouteBtn').style.display = 'none';
         document.getElementById('hideRouteBtn').style.display = 'block';
     });
 }
@@ -350,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('clearSearch').addEventListener('click', clearSearch);
     // Agregar un evento al botón de mostrar ruta
-    document.getElementById('showRouteBtn').addEventListener('click', showRoute);
+    //document.getElementById('showRouteBtn').addEventListener('click', showRoute);
 });
 
 
