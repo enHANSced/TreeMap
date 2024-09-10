@@ -49,6 +49,7 @@ const treeIcon = L.icon({
 });
 
 
+
 // Función para mostrar los árboles en el mapa y en la lista
 function displayTrees(treesToShow) {
     clearMarkers();
@@ -58,6 +59,21 @@ function displayTrees(treesToShow) {
         const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], { icon: treeIcon }).addTo(map);
         // Agregar un popup al marcador
         marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br><b>Sembrado el</b> ${getFormattedDate(tree.fecha.toDate())} a las ${getFormattedTime(tree.fecha.toDate())}`);
+        marker.on('click', () => { selectMarker(tree, marker); });
+
+        // Función para seleccionar un árbol y centrar el mapa en su ubicación
+        function selectMarker(tree, marker) {
+            selectedTree = tree;
+            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.5}); // Utiliza flyTo en lugar de setView para un centrado suave
+            marker.openPopup();
+            document.getElementById('showRouteBtn').style.display = 'block';
+        }
+
+        // Detectar cuando se cierra el popup
+        marker.on('popupclose', () => {
+            document.getElementById('showRouteBtn').style.display = 'none';
+            map.flyTo([15.7681, -86.7897], 13, { animate: true, duration: 0.5 });
+        });
 
         // Función para obtener la fecha formateada
         function getFormattedDate(date) {
@@ -149,11 +165,6 @@ function applyFilters() {
     displayTrees(filteredTrees);
 }
 
-// Hacer las funciones disponibles globalmente
-window.searchTrees = searchTrees;
-window.applyFilters = applyFilters;
-window.resetFilters = resetFilters;
-
 
 // Función para filtrar por fecha
 function filterByDate(treeDate, filter) {
@@ -217,10 +228,14 @@ function toggleClearButton() {
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
-    map.flyTo(marker.getLatLng(), 17, {animate: true, duration: 1.2}); // Utiliza flyTo en lugar de setView para un centrado suave
+    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 1.2 }); // Utiliza flyTo en lugar de setView para un centrado suave
     marker.openPopup();
-    document.getElementById('showRouteBtn').style.display = 'block'; 
+    document.getElementById('showRouteBtn').style.display = 'block';
 }
+
+
+
+
 
 
 
@@ -231,23 +246,86 @@ function showRoute() {
         return;
     }
 
+    // Eliminar todos los marcadores del mapa
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+
     if (routing) {
         map.removeControl(routing);
     }
 
     navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
+
+
         routing = L.Routing.control({
             waypoints: [
                 L.latLng(latitude, longitude),
-                L.latLng(selectedTree.lat, selectedTree.lng)
+                L.latLng(selectedTree.ubicacion.latitude, selectedTree.ubicacion.longitude)
             ],
-            routeWhileDragging: true
+            routeWhileDragging: true,
+            //show: false, // Ocultar las indicaciones de la ruta
+            lineOptions: { styles: [{ color: '#14A44D', weight: 6 }] },
+            addWaypoints: false,
+            draggableWaypoints: false,
+            fitSelectedRoutes: true,
+            language: 'es',
+            createMarker: function (i, wp) {
+                if (i === 0) {
+                    return L.marker(wp.latLng).bindPopup('Ubicación actual');
+                } else {
+                    return L.marker(wp.latLng, {
+                        icon: treeIcon
+                    }).bindPopup(`<b>${selectedTree.nombre}</b><br>${selectedTree.especie}<br><b>Sembrado el</b> ${selectedTree.fecha.toDate().toLocaleDateString()} a las ${selectedTree.fecha.toDate().toLocaleTimeString()}`);
+                }
+            }
         }).addTo(map);
-    }, () => {
-        alert('No se pudo obtener su ubicación. Asegúrese de permitir el acceso a la ubicación.');
+
+        // Mostrar el botón de "Ocultar Ruta" y ocultar el de "Mostrar Ruta"
+        document.getElementById('showRouteBtn').style.display = 'none';
+        document.getElementById('hideRouteBtn').style.display = 'block';
     });
 }
+
+// Función para ocultar la ruta y restaurar el mapa
+function hideRoute() {
+    // Eliminar todos los marcadores del mapa
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+
+    if (routing) {
+        map.removeControl(routing);
+        routing = null;
+    }
+
+    // Ocultar el botón de "Ocultar Ruta" y mostrar el de "Mostrar Ruta"
+    document.getElementById('hideRouteBtn').style.display = 'none';
+    //document.getElementById('showRouteBtn').style.display = 'block';
+
+
+    displayTrees(trees); // Volver a mostrar los árboles en el mapa
+    map.flyTo([15.7681, -86.7897], 13, { animate: true, duration: 1 }); // Centrar el mapa en la posición inicial
+}
+
+
+
+
+
+
+
+
+
+// Hacer las funciones disponibles globalmente
+window.searchTrees = searchTrees;
+window.applyFilters = applyFilters;
+window.resetFilters = resetFilters;
+window.hideRoute = hideRoute;
 
 
 
