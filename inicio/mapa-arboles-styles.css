@@ -1,13 +1,9 @@
 #map {
-    height: 740px;
+    height: 80vh;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-#treeList {
-    max-height: 400px;
-    overflow-y: auto;
-}
 
 .list-group-item {
     cursor: pointer;
@@ -17,8 +13,12 @@
     background-color: #f8f9fa;
 }
 
+.card {
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
 #treeList {
-    max-height: 530px;
+    max-height: 58vh;
     /* Ajusta esta altura según el tamaño de tus elementos */
     overflow-y: auto;
 }

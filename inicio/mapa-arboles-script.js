@@ -58,13 +58,15 @@ function displayTrees(treesToShow) {
     treesToShow.forEach(tree => {
         const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], { icon: treeIcon }).addTo(map);
         // Agregar un popup al marcador
-        marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br><b>Sembrado el</b> ${getFormattedDate(tree.fecha.toDate())} a las ${getFormattedTime(tree.fecha.toDate())}`);
+        marker.bindPopup(`<b>${tree.nombre}</b><br>${tree.especie}<br><b>Sembrado el</b> ${getFormattedDate(tree.fecha.toDate())} a las ${getFormattedTime(tree.fecha.toDate())}<br>
+        <button class="btn btn-success btn-sm mt-1" onclick="showRoute()">Mostrar Ruta</button>`);
         marker.on('click', () => { selectMarker(tree, marker); });
+
 
         // Función para seleccionar un árbol y centrar el mapa en su ubicación
         function selectMarker(tree, marker) {
             selectedTree = tree;
-            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.5}); // Utiliza flyTo en lugar de setView para un centrado suave
+            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.5 }); // Utiliza flyTo en lugar de setView para un centrado suave
             marker.openPopup();
             document.getElementById('showRouteBtn').style.display = 'block';
         }
@@ -106,8 +108,6 @@ function clearMarkers() {
 
 
 
-
-
 // Función para buscar árboles
 function searchTrees() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -142,29 +142,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Función para aplicar los filtros
-
-document.getElementById('speciesFilter').addEventListener('change', showResetButton);
-document.getElementById('careerFilter').addEventListener('change', showResetButton);
-document.getElementById('dateFilter').addEventListener('change', showResetButton);
-
-function showResetButton() {
-    const speciesFilter = document.getElementById('speciesFilter').value;
-    const careerFilter = document.getElementById('careerFilter').value;
-    const dateFilter = document.getElementById('dateFilter').value;
-
-    if (speciesFilter || careerFilter || dateFilter) {
-        document.getElementById('resetFiltersBtn').style.display = 'block';
-    } else {
-        document.getElementById('resetFiltersBtn').style.display = 'none';
-    }
-}
-
 function resetFilters() {
     document.getElementById('speciesFilter').value = '';
     document.getElementById('careerFilter').value = '';
     document.getElementById('dateFilter').value = '';
     document.getElementById('resetFiltersBtn').style.display = 'none';
     applyFilters(); // Reaplicar los filtros para mostrar todos los árboles
+    document.getElementById('resetFiltersBtn').style.display = 'none'; // Oculta el botón de restablecer
     map.setView([15.7681, -86.7897], 13, { animate: true, duration: 2 }); // Centra el mapa en la posición inicial
 }
 
@@ -183,6 +167,8 @@ function applyFilters() {
         const matchesDate = dateFilter === '' || filterByDate(tree.fecha.toDate(), dateFilter);
         return matchesSpecies && matchesCareer && matchesDate;
     });
+
+    document.getElementById('resetFiltersBtn').style.display = 'block';
 
     displayTrees(filteredTrees);
 }
@@ -301,9 +287,10 @@ function showRoute() {
                 } else {
                     return L.marker(wp.latLng, {
                         icon: treeIcon
-                    }).bindPopup(`<b>${selectedTree.nombre}</b><br>${selectedTree.especie}<br><b>Sembrado el</b> ${selectedTree.fecha.toDate().toLocaleDateString()} a las ${selectedTree.fecha.toDate().toLocaleTimeString()}`);
+                    }).bindPopup(`<b>${selectedTree.nombre}</b><br>${selectedTree.especie}<br><b>Sembrado el</b> ${selectedTree.fecha.toDate().toLocaleDateString()} a las ${selectedTree.fecha.toDate().toLocaleTimeString()}
+                    <br><button class="btn btn-danger btn-sm mt-1" onclick="hideRoute()">Ocultar Ruta</button>`);
                 }
-            }
+            },
         }).addTo(map);
 
         // Mostrar el botón de "Ocultar Ruta" y ocultar el de "Mostrar Ruta"
@@ -348,6 +335,7 @@ window.searchTrees = searchTrees;
 window.applyFilters = applyFilters;
 window.resetFilters = resetFilters;
 window.hideRoute = hideRoute;
+window.showRoute = showRoute;
 
 
 
