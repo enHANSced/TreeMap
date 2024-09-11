@@ -125,11 +125,11 @@ function displayTrees(treesToShow) {
         marker.on('popupclose', () => {
             //document.getElementById('showRouteBtn').style.display = 'none';
             //haacer zoom al mapa en la ubicacion del ultimo marcador seleccionado
-            //map.flyTo(marker.getLatLng(), 16, { animate: true, duration: 0.5 });
+            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.4 });
 
             //map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1 });
 
-            map.flyTo([latitude, longitude], 14, { animate: true, duration: 0.4 });
+            //map.flyTo([latitude, longitude], 14, { animate: true, duration: 0.4 });
         });
 
         // Función para obtener la fecha formateada
@@ -311,7 +311,7 @@ function toggleClearButton() {
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
-    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 1 }); // Utiliza flyTo en lugar de setView para un centrado suave
+    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 3 }); // Utiliza flyTo en lugar de setView para un centrado suave
     marker.openPopup();
     //document.getElementById('showRouteBtn').style.display = 'block';
 
