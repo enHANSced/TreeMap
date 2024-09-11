@@ -27,6 +27,7 @@ function initMap() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
+
 }
 
 
@@ -128,7 +129,7 @@ function displayTrees(treesToShow) {
 
             //map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1 });
 
-            map.flyTo([latitude,longitude], 14, { animate: true, duration: 0.4 });
+            map.flyTo([latitude, longitude], 14, { animate: true, duration: 0.4 });
         });
 
         // Función para obtener la fecha formateada
@@ -147,6 +148,8 @@ function displayTrees(treesToShow) {
         treeItem.className = 'list-group-item list-group-item-action';
         treeItem.innerHTML = `<strong>${tree.nombre}</strong> (${tree.cuenta})<br>${tree.especie} - ${tree.carrera}`;
         treeItem.onclick = () => {
+            //cerrar el popup actual
+            map.closePopup();
             selectTree(tree, marker);
         };
         treeList.appendChild(treeItem);
@@ -243,6 +246,10 @@ function applyFilters() {
     document.getElementById('resetFiltersBtn').style.display = 'block';
 
     displayTrees(filteredTrees);
+    
+    // Desplazar suavemente hacia el mapa en dispositivos móviles
+    const mapContainer = document.getElementById('map');
+    mapContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
 
@@ -308,9 +315,14 @@ function toggleClearButton() {
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
-    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 2 }); // Utiliza flyTo en lugar de setView para un centrado suave
+    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 1 }); // Utiliza flyTo en lugar de setView para un centrado suave
     marker.openPopup();
     //document.getElementById('showRouteBtn').style.display = 'block';
+
+
+    // Desplazar suavemente hacia el mapa en dispositivos móviles
+    const mapContainer = document.getElementById('map');
+    mapContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
 
@@ -336,7 +348,7 @@ function showRoute() {
     if (routing) {
         map.removeControl(routing);
     }
-    
+
 
     navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;

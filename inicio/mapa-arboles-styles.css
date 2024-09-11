@@ -1,7 +1,15 @@
+
 #map {
     height: 80vh;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    #map {
+        height: 50vh;
+        /* Ajusta la altura del mapa en dispositivos móviles */
+    }
 }
 
 .navbar {
@@ -20,7 +28,7 @@
 }
 
 .card {
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #treeList {
@@ -57,8 +65,6 @@
     font-size: 14px;
 }
 
-
-
 .popup-content {
     display: flex;
     align-items: center;
@@ -88,19 +94,19 @@
     flex-grow: 1;
 }
 
+/* Estilos para el modal de imagen */
 .modal {
     display: none;
     position: fixed;
     z-index: 10000;
-    /* Asegúrate de que el z-index sea alto */
     padding-top: 60px;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
+    animation: fadeIn 0.5s;
 }
 
 .modal-content {
@@ -108,6 +114,9 @@
     display: block;
     width: 80%;
     max-width: 700px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    animation: zoomIn 0.5s;
 }
 
 .close {
@@ -115,7 +124,7 @@
     top: 15px;
     right: 35px;
     color: #f1f1f1;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
 }
@@ -125,6 +134,27 @@
     color: #bbb;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.5);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }
 
 /*personaliza los select para que vayana a juego con el diseño de la página*/
@@ -147,7 +177,6 @@
     border-color: #5cb85c;
     box-shadow: 0 0 10px #5cb85c80;
 }
-
 
 /*cambia el color del item del select cuando pasamos el raton que por defecto es rojo*/
 .form-select option:hover {
