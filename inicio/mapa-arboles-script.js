@@ -8,6 +8,10 @@ let map, markers = [], routing;
 const trees = []; // Aquí se cargarán los árboles desde la base de datos
 let selectedTree = null;
 
+// Obtener referencia al modal de carga
+const loadingModalElement = document.getElementById('loadingModal');
+const loadingModal = new bootstrap.Modal(loadingModalElement);
+
 // Función para inicializar el mapa
 function initMap() {
     map = L.map('map').setView([15.7681, -86.7897], 13);
@@ -22,6 +26,8 @@ function initMap() {
 // Función para cargar los árboles desde la base de datos
 async function loadTrees() {
     try {
+        // Mostrar el modal de carga
+        loadingModal.show();
         const querySnapshot = await getDocs(collection(db, 'tree'));
         querySnapshot.forEach(doc => {
             const tree = doc.data();
@@ -29,9 +35,31 @@ async function loadTrees() {
             tree.id = doc.id;
             trees.push(tree);
         });
+
         displayTrees(trees);
     } catch (error) {
         console.error("Error al cargar los árboles: ", error);
+    } finally {
+        // Ocultar el modal de carga
+        console.log("Ocultando modal de carga");
+        loadingModal.hide();
+
+        // Asegurarse de que el modal esté completamente oculto
+        loadingModalElement.addEventListener('hidden.bs.modal', () => {
+            console.log("Modal de carga oculto");
+        });
+
+        // Forzar el ocultamiento del modal manipulando el DOM directamente
+        // agregar un delay para que la animación de ocultamiento se complete
+        setTimeout(() => {
+            loadingModalElement.classList.add('fade');
+            loadingModalElement.classList.remove('show');
+            setTimeout(() => {
+                loadingModalElement.style.display = 'none';
+                document.body.classList.remove('modal-open');
+                document.querySelector('.modal-backdrop').remove();
+            }, 400);
+        }, 1000);
     }
 }
 

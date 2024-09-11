@@ -87,6 +87,46 @@ L.easyButton('bi bi-crosshair', function (btn, map) {
 
 
 
+
+
+
+
+
+
+// Función para mostrar el modal con la animación Lottie y el mensaje
+function mostrarModalExito(nombre, especie) {
+    // Inicializar la animación Lottie
+    lottie.loadAnimation({
+        container: document.getElementById('lottie-animation'), // ID del contenedor
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: '../recursos/tree-succes.json' // Ruta a tu archivo de animación Lottie
+    });
+
+    // Actualizar el mensaje del modal
+    const successMessage = document.getElementById('successMessage');
+    if (especie === 'Desconocido') {
+        successMessage.textContent = `${nombre}, tu árbol ha sido registrado exitosamente. ¡Gracias por sembrar vida!`;
+    } else {
+        successMessage.textContent = `${nombre}, tu ${especie} ha sido registrado(a) exitosamente. ¡Gracias por sembrar vida!`;
+    }
+
+    // Ocultar el modal de carga
+    $('#loadingModal').modal('hide');
+
+    // Mostrar el modal de éxito
+    $('#successModal').modal('show');
+
+    // Agregar evento click al botón "Ver en el Mapa"
+    document.getElementById('verMapaBtn').addEventListener('click', function () {
+        window.location.href = '../inicio/mapa-arboles.html'; 
+    });
+}
+
+
+
+
 // Manejo del formulario de registro
 document.getElementById('registro-form').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -96,6 +136,9 @@ document.getElementById('registro-form').addEventListener('submit', async functi
         alert('Por favor, selecciona la ubicación de tu árbol en el mapa.');
         return;
     }
+
+    // Mostrar el modal de carga
+    $('#loadingModal').modal('show');
 
     // Capturar datos del formulario
     const nombre = document.getElementById('nombre').value;
@@ -117,57 +160,39 @@ document.getElementById('registro-form').addEventListener('submit', async functi
     const imagenInput = document.getElementById('imagen');
     const imagenArchivo = imagenInput.files[0];
 
-    // Verificar si se seleccionó una imagen
-    if (!imagenArchivo) {
-        alert('Por favor, selecciona una imagen del árbol.');
-        return;
-    }
-
-    // Subir la imagen a Firebase Storage y obtener la URL
-    const imagenRef = ref(storage, `imagenes/${imagenArchivo.name}`);
-
-    // Registrar en Firebase
     try {
-        await uploadBytes(imagenRef, imagenArchivo);
-        const imagenURL = await getDownloadURL(imagenRef);
-        //Registrar en Firestore
-        const docRef = await addDoc(collection(db, "tree"), {
+        let imagenURL = null;
+
+        // Verificar si se seleccionó una imagen
+        if (imagenArchivo) {
+            // Subir la imagen a Firebase Storage y obtener la URL
+            const imagenRef = ref(storage, `imagenes/${imagenArchivo.name}`);
+            await uploadBytes(imagenRef, imagenArchivo);
+            imagenURL = await getDownloadURL(imagenRef);
+        }
+
+        // Registrar en Firestore
+        const docData = {
             nombre,
             cuenta,
             carrera,
             especie,
             fecha: Timestamp.fromDate(new Date(fecha)),
-            ubicacion: new GeoPoint(coords[0], coords[1]),
-            imagenURL
-        });
+            ubicacion: new GeoPoint(coords[0], coords[1])
+        };
+
+        // Agregar la URL de la imagen si existe
+        if (imagenURL) {
+            docData.imagenURL = imagenURL;
+        }
+
+        const docRef = await addDoc(collection(db, "tree"), docData);
         console.log("Document written with ID: ", docRef.id);
 
 
-        /*db.collection('tree').add({
-            nombre,
-            cuenta,
-            carrera,
-            especie,
-            fecha: new firebase.firestore.Timestamp(fecha),
-            ubicacion: new firebase.firestore.GeoPoint(coords.lat, coords.lng)
-        });*/
-
-
-
         // Mensaje de exito
-        if (especieSelect.value === '0') {
-            alert(`${nombre} tu árbol ha sido registrado exitosamente. ¡Gracias por sembrar vida!`);
-        } else {
-            alert(`${nombre} tu ${especie} ha sido registrado exitosamente. ¡Gracias por sembrar vida!`);
-        }
-
-
-        // Añadir información detallada al marcador para mostrar en el mapa
-        //const popupContent = `<b>${nombre}</b> • ${carrera}<br>${especie}<br><b>Sembrado el:</b> ${new Date(fecha).toLocaleString()}`;
-        //marker.bindPopup(popupContent).openPopup();
-
-        // Navegar a la pagina mapa-arboles.html
-        window.location.href = '../inicio/mapa-arboles.html';
+        mostrarModalExito(nombre, especie);
+ 
 
         // Limpiar formulario
         document.getElementById('registro-form').reset();
@@ -175,6 +200,8 @@ document.getElementById('registro-form').addEventListener('submit', async functi
     } catch (error) {
         console.error("Error al registrar el árbol: ", error);
         alert("Hubo un error al registrar el árbol. Por favor, intenta nuevamente.");
+        // Ocultar el modal de carga en caso de error
+        $('#loadingModal').modal('hide');
     }
 });
 
