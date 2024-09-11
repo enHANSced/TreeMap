@@ -1,5 +1,170 @@
-#map {
-    height: 50vh;
-    margin-top: 20px;
-    border-radius: 5px;
+/* Asegúrate de que todos los elementos respeten su contenedor */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
+
+/* General */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Ajuste del contenedor principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Distribuye el espacio entre los elementos */
+    min-height: 91vh;
+    /* Ajusta la altura mínima al 80% de la pantalla */
+    max-height: 90vh;
+    /* Altura máxima para evitar scroll en pantallas pequeñas */
+    overflow: hidden;
+    /* Oculta cualquier desbordamiento */
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+/* Encabezado */
+h1 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* Campos del formulario */
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus {
+    border-color: #5cb85c;
+    box-shadow: 0 0 5px #5cb85c80;
+}
+
+/* Botones */
+.btn {
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-success {
+    background-color: #5cb85c;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #4cae4c;
+    box-shadow: 0 4px 6px rgba(76, 174, 76, 0.3);
+}
+
+.btn-secondary {
+    border: none;
+    background-color: #6c757d;
+}
+
+/* Mapa: Ajustar para ocupar espacio sin causar scroll */
+#map {
+    flex: 1;
+    height: 40vh;
+    /* Ajusta dinámicamente, puedes reducir si sigue generando scroll */
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    /* Asegura que el mapa se ajuste sin scroll */
+}
+
+/* Modales */
+.modal-content {
+    border-radius: 10px;
+}
+
+
+/* Asegúrate de que los formularios no excedan su contenedor */
+#registro-form {
+    flex: 1;
+    /* Permite que el formulario se expanda */
+    overflow-y: auto;
+    /* Habilita scroll interno si es necesario, pero evita el scroll general */
+    max-width: 100%;
+    /* Asegura que el formulario no se expanda más allá del contenedor */
+    flex-wrap: wrap;
+    /* Permite que los elementos se ajusten en varias líneas si es necesario */
+    overflow-x: hidden;
+    /* Evita scroll horizontal dentro del formulario */
+
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+
+
+/* Ajustes opcionales para personalizar aún más */
+input[type="file"] {
+    display: block;
+    /* Asegura que se mantenga alineado */
+    width: 100%;
+    /* Ocupa todo el espacio disponible */
+    padding: 5px;
+    /* Espacio interno para una mejor presentación */
+    border: 1px solid #ced4da;
+    /* Estilo de borde acorde con Bootstrap */
+    border-radius: 0.25rem;
+    /* Bordes redondeados */
+    background-color: #fff;
+    /* Fondo blanco para un look limpio */
+}
+
+/* Estilo al pasar el mouse */
+input[type="file"]:hover {
+    border-color: #80ffb1;
+    /* Cambia el color del borde */
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 55, 0.25);
+    /* Sombra al hacer hover */
+}
+
+
+/* Estilo general para la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 11px;
+    /* Ancho de la barra de desplazamiento */
+    height: 8px;
+    /* Alto de la barra de desplazamiento (para scroll horizontal, si existiera) */
+}
+
+/* Fondo de la barra de desplazamiento */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Color del fondo de la barra */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra que se desplaza */
+::-webkit-scrollbar-thumb {
+    background-color: #5cb85c80;
+    /* Color de la barra de desplazamiento */
+    border-radius:30px;
+    /* Bordes redondeados */
+    border: 2px solid #f1f1f1;
+    /* Espacio alrededor de la barra para darle un efecto flotante */
+}
+
+/* Cambio de color al pasar el mouse sobre la barra */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    /* Color más oscuro cuando se pasa el mouse */
+}
+
