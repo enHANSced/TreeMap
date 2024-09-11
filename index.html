@@ -4,42 +4,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantalla Principal</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+    <title>Planta un Árbol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.14/lottie.min.js"></script>
 </head>
 
-<body>
-    <div class="container text-center mt-5">
-        <h1>Página Principal</h1>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <main class="container mx-auto flex-grow flex flex-col justify-center items-center px-4 py-8">
+        <div class="bg-gray-50 shadow-lg rounded-lg p-6 items-center text-center px-4 py-8">
+            <h1 class="text-4xl font-bold text-green-900 mb-6">Haz tu parte por el planeta</h1>
 
-        <button id="registerTreeBtn" class="btn btn-success btn-lg mt-2">Registrar Árbol</button>
-        <button id="mapTreesBtn" class="btn btn-secondary btn-lg mt-2">Mapa de árboles plantados</button>
+            <div id="lottie-animation" class="w-70 h-64 mb-6"></div>
 
+            <p class="text-xl text-gray-700 mb-8 max-w-2xl">
+            Cada árbol cuenta. Únete a la comunidad de personas que están haciendo la diferencia, un árbol a la vez.
+            </p>
 
-        <div id="lottie-animation" class="img-fluid"></div>
+            <div class="space-y-4 w-full max-w-md mx-auto">
+            <a href="registro/registro.html"
+                class="block w-full text-center bg-green-500 hover:bg-green-400 text-white font-bold py-3 px-4 rounded-lg transition duration-300 text-lg">
+                Registrar un Árbol
+            </a>
+            <a href="inicio/mapa-arboles.html"
+                class="block w-full text-center bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded-lg transition duration-300 text-lg">
+                Ver Mapa de Árboles Plantados
+            </a>
+            </div>
+        </div>
+    </main>
 
-    </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <footer class="bg-gray-200 shadow-lg py-4 text-center text-gray-800 rounded-lg">
+        <p>Juntos por un futuro más verde</p>
+    </footer>
+
     <script>
-        document.getElementById('registerTreeBtn').addEventListener('click', () => {
-            window.location.href = 'registro/registro.html';
-        });
+        // Array of Lottie animation options
+        const animations = [
+            {
+                name: 'Inicial',
+                path: 'https://assets2.lottiefiles.com/packages/lf20_rjgikbck.json'
+            },
+            {
+                name: 'Árbol creciendo',
+                path: '../recursos/tree-growing.json'
+            },
+            {
+                name: 'Árbol feliz',
+                path: '../recursos/happy-tree.json'
+            },
+            {
+                name: 'Plantando un árbol',
+                path: '../recursos/plant-tree.json'
+            },
+            {
+                name: 'Ciclo de vida del árbol',
+                path: '../recursos/girl-cycling-in-autumn.json'
+            },
+            {
+                name: 'Cuidando el planeta',
+                path: '../recursos/tree.json'
+            },
+            {
+                name: 'Tierra Feliz',
+                path: '../recursos/happy-earth.json'
+            }
+        ];
 
-        document.getElementById('mapTreesBtn').addEventListener('click', () => {
-            window.location.href = 'inicio/mapa-arboles.html';
-        });
-        // Lottie animation
-        var animation = lottie.loadAnimation({
-            container: document.getElementById('lottie-animation'), // the dom element that will contain the animation
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
+        // Function to load a random animation
+        function loadRandomAnimation() {
+            const randomIndex = Math.floor(Math.random() * animations.length);
+            const selectedAnimation = animations[randomIndex];
 
-            path: '../recursos/plant-tree.json' // the path to the animation json
-        });
+            lottie.loadAnimation({
+                container: document.getElementById('lottie-animation'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: selectedAnimation.path
+            });
+
+            console.log(`Loaded animation: ${selectedAnimation.name}`);
+        }
+
+        // Load a random animation when the page loads
+        loadRandomAnimation();
     </script>
 </body>
 
