@@ -115,7 +115,7 @@ function displayTrees(treesToShow) {
         // Función para seleccionar un árbol y centrar el mapa en su ubicación
         function selectMarker(tree, marker) {
             selectedTree = tree;
-            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 1 }); // Utiliza flyTo en lugar de setView para un centrado suave
+            map.flyTo(marker.getLatLng(), 15, { animate: true, duration: 1 }); // Utiliza flyTo en lugar de setView para un centrado suave
             marker.openPopup();
             //document.getElementById('showRouteBtn').style.display = 'block';
         }
@@ -128,7 +128,7 @@ function displayTrees(treesToShow) {
 
             //map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1 });
 
-            map.flyTo([latitude,longitude], 14, { animate: true, duration: 0.5 });
+            map.flyTo([latitude,longitude], 14, { animate: true, duration: 0.4 });
         });
 
         // Función para obtener la fecha formateada
@@ -371,6 +371,7 @@ function showRoute() {
         }).addTo(map);
 
 
+
         // Mostrar el botón de "Ocultar Ruta" y ocultar el de "Mostrar Ruta"
         document.getElementById('hideRouteBtn').style.display = 'block';
     });
@@ -396,7 +397,7 @@ function hideRoute() {
 
 
     displayTrees(trees); // Volver a mostrar los árboles en el mapa
-    map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1.5 }); // Centrar el mapa en la posición inicial
+    map.flyTo([latitude, longitude], 13, { animate: true, duration: 1 }); // Centrar el mapa en la posición inicial
 }
 
 
