@@ -1,6 +1,6 @@
 
 // Referencia a la base de datos de Firebase
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 const db = window.db;
 
 // Variables globales
@@ -38,13 +38,16 @@ async function loadTrees() {
     try {
         // Mostrar el modal de carga
         loadingModal.show();
-        const querySnapshot = await getDocs(collection(db, 'tree'));
+        const querySnapshot = await getDocs(
+            query(collection(db, 'tree'), orderBy('fecha', 'desc'))
+        );
         querySnapshot.forEach(doc => {
             const tree = doc.data();
             console.log(tree);
             tree.id = doc.id;
             trees.push(tree);
         });
+
 
         displayTrees(trees);
     } catch (error) {
@@ -125,7 +128,7 @@ function displayTrees(treesToShow) {
         marker.on('popupclose', () => {
             //document.getElementById('showRouteBtn').style.display = 'none';
             //haacer zoom al mapa en la ubicacion del ultimo marcador seleccionado
-            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.4 });
+            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.6 });
 
             //map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1 });
 
@@ -311,7 +314,7 @@ function toggleClearButton() {
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
-    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 3 }); // Utiliza flyTo en lugar de setView para un centrado suave
+    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 2.5 }); // Utiliza flyTo en lugar de setView para un centrado suave
     marker.openPopup();
     //document.getElementById('showRouteBtn').style.display = 'block';
 
@@ -421,7 +424,7 @@ function hideRoute() {
 
 
     displayTrees(trees); // Volver a mostrar los árboles en el mapa
-    map.flyTo([latitude, longitude], 13, { animate: true, duration: 1 }); // Centrar el mapa en la posición inicial
+    map.flyTo([latitude, longitude], 13, { animate: true, duration: 1.5 }); // Centrar el mapa en la posición inicial
 }
 
 
