@@ -12,9 +12,18 @@ let selectedTree = null;
 const loadingModalElement = document.getElementById('loadingModal');
 const loadingModal = new bootstrap.Modal(loadingModalElement);
 
+// Obtener las coordenadas de la ubicación actual
+let latitude = 15.7681, longitude = -86.7897; // Coordenadas de la UNAH-VS
+navigator.geolocation.getCurrentPosition(position => {
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+    console.log(`Ubicación actual: ${latitude}, ${longitude}`);
+});
+
+
 // Función para inicializar el mapa
 function initMap() {
-    map = L.map('map').setView([15.7681, -86.7897], 13);
+    map = L.map('map').setView([latitude, longitude], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
@@ -58,8 +67,8 @@ async function loadTrees() {
                 loadingModalElement.style.display = 'none';
                 document.body.classList.remove('modal-open');
                 document.querySelector('.modal-backdrop').remove();
-            }, 400);
-        }, 1000);
+            }, 200);
+        }, 400);
     }
 }
 
@@ -106,7 +115,7 @@ function displayTrees(treesToShow) {
         // Función para seleccionar un árbol y centrar el mapa en su ubicación
         function selectMarker(tree, marker) {
             selectedTree = tree;
-            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.5 }); // Utiliza flyTo en lugar de setView para un centrado suave
+            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 1 }); // Utiliza flyTo en lugar de setView para un centrado suave
             marker.openPopup();
             //document.getElementById('showRouteBtn').style.display = 'block';
         }
@@ -114,7 +123,12 @@ function displayTrees(treesToShow) {
         // Detectar cuando se cierra el popup
         marker.on('popupclose', () => {
             //document.getElementById('showRouteBtn').style.display = 'none';
-            map.flyTo([15.7681, -86.7897], 13, { animate: true, duration: 0.5 });
+            //haacer zoom al mapa en la ubicacion del ultimo marcador seleccionado
+            //map.flyTo(marker.getLatLng(), 16, { animate: true, duration: 0.5 });
+
+            //map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1 });
+
+            map.flyTo([latitude,longitude], 14, { animate: true, duration: 0.5 });
         });
 
         // Función para obtener la fecha formateada
@@ -153,6 +167,7 @@ function closeModal() {
     const modal = document.getElementById('imageModal');
     modal.style.display = 'none';
 }
+
 
 
 
@@ -293,7 +308,7 @@ function toggleClearButton() {
 // Función para seleccionar un árbol y centrar el mapa en su ubicación
 function selectTree(tree, marker) {
     selectedTree = tree;
-    map.flyTo(marker.getLatLng(), 16, { animate: true, duration: 1.2 }); // Utiliza flyTo en lugar de setView para un centrado suave
+    map.flyTo(marker.getLatLng(), 17, { animate: true, duration: 2 }); // Utiliza flyTo en lugar de setView para un centrado suave
     marker.openPopup();
     //document.getElementById('showRouteBtn').style.display = 'block';
 }
@@ -321,10 +336,10 @@ function showRoute() {
     if (routing) {
         map.removeControl(routing);
     }
+    
 
     navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
-
 
         routing = L.Routing.control({
             waypoints: [
@@ -332,13 +347,15 @@ function showRoute() {
                 L.latLng(selectedTree.ubicacion.latitude, selectedTree.ubicacion.longitude)
             ],
             routeWhileDragging: true,
-            //show: false, // Ocultar las indicaciones de la ruta
+            show: false, // Ocultar las indicaciones de la ruta
             lineOptions: { styles: [{ color: '#14A44D', weight: 6 }] },
             addWaypoints: false,
             draggableWaypoints: false,
             fitSelectedRoutes: true,
             language: 'es',
             collapsible: true, // Mostrar el panel de indicaciones colapsado
+            showAlternatives: true,
+            altLineOptions: { styles: [{ color: '#9FA6B2', weight: 6 }] },
             createMarker: function (i, wp) {
                 if (i === 0) {
                     return L.marker(wp.latLng).bindPopup('Ubicación actual');
@@ -379,7 +396,7 @@ function hideRoute() {
 
 
     displayTrees(trees); // Volver a mostrar los árboles en el mapa
-    map.flyTo([15.7681, -86.7897], 13, { animate: true, duration: 1 }); // Centrar el mapa en la posición inicial
+    map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1.5 }); // Centrar el mapa en la posición inicial
 }
 
 
