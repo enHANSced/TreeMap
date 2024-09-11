@@ -4,17 +4,23 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+.navbar {
+    background: linear-gradient(#fdfdfd, #dadada);
+    padding: 17px;
+    border-bottom: 1px solid #c9c9c9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
 .list-group-item {
     cursor: pointer;
 }
 
 .list-group-item:hover {
-    background-color: #f8f9fa;
+    background-color: #eff7ef;
 }
 
 .card {
-    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 #treeList {
@@ -30,7 +36,7 @@
 }
 
 #treeList::-webkit-scrollbar-thumb {
-    background-color: #04b36157;
+    background-color: #04b33e6b;
     /* Color del pulgar de la barra de desplazamiento */
     border-radius: 10px;
     /* Bordes redondeados del pulgar */
@@ -121,4 +127,30 @@
     cursor: pointer;
 }
 
+/*personaliza los select para que vayana a juego con el diseño de la página*/
+.form-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-select:focus {
+    border-color: #5cb85c;
+    box-shadow: 0 0 10px #5cb85c80;
+}
+
+
+/*cambia el color del item del select cuando pasamos el raton que por defecto es rojo*/
+.form-select option:hover {
+    background-color: #5cb85c;
+    color: white;
+}
