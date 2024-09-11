@@ -12,7 +12,9 @@ function obtenerFechaActual() {
     const ahora = new Date();
     ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset()); // Ajustar la fecha a la zona horaria local
     const fecha = ahora.toISOString().slice(0, 16); // Formato 'YYYY-MM-DDTHH:MM'
-    document.getElementById('fecha').value = fecha; // Establecer la fecha actual por defecto
+    const fechaInput = document.getElementById('fecha');
+    fechaInput.value = fecha; // Establecer la fecha actual por defecto
+    fechaInput.max = fecha; // Deshabilitar la selección de fechas y horas futuras
 }
 
 // Inicializar el mapa centrado en una ubicación genérica (en caso de fallo en la geolocalización)
@@ -120,7 +122,7 @@ function mostrarModalExito(nombre, especie) {
 
     // Agregar evento click al botón "Ver en el Mapa"
     document.getElementById('verMapaBtn').addEventListener('click', function () {
-        window.location.href = '../inicio/mapa-arboles.html'; 
+        window.location.href = '../inicio/mapa-arboles.html';
     });
 }
 
@@ -192,7 +194,7 @@ document.getElementById('registro-form').addEventListener('submit', async functi
 
         // Mensaje de exito
         mostrarModalExito(nombre, especie);
- 
+
 
         // Limpiar formulario
         document.getElementById('registro-form').reset();
