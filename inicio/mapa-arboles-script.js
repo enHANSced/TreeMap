@@ -128,7 +128,7 @@ function displayTrees(treesToShow) {
         marker.on('popupclose', () => {
             //document.getElementById('showRouteBtn').style.display = 'none';
             //haacer zoom al mapa en la ubicacion del ultimo marcador seleccionado
-            map.flyTo(marker.getLatLng(), 14, { animate: true, duration: 0.6 });
+            map.flyTo(marker.getLatLng(), 16, { animate: true, duration: 0.6 });
 
             //map.setView([15.7681, -86.7897], 13, { animate: true, duration: 1 });
 
