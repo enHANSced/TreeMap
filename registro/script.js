@@ -101,7 +101,7 @@ function mostrarModalExito(nombre, especie) {
         renderer: 'svg',
         loop: false,
         autoplay: true,
-        path: '../recursos/tree-succes.json' // Ruta a tu archivo de animación Lottie
+        path: 'https://lottie.host/51d78037-f07f-4f1b-8c17-3a82ef60fdf7/W43n2CdnQi.json' // Ruta a tu archivo de animación Lottie
     });
 
     // Actualizar el mensaje del modal
