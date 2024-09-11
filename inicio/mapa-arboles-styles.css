@@ -5,13 +5,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-    #map {
-        height: 50vh;
-        /* Ajusta la altura del mapa en dispositivos móviles */
-    }
-}
-
 .navbar {
     background: linear-gradient(#fdfdfd, #dadada);
     padding: 17px;
@@ -182,4 +175,26 @@
 .form-select option:hover {
     background-color: #5cb85c;
     color: white;
+}
+
+#scrollToTopBtn {
+    display: none;
+    /* Oculto por defecto */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    border: none;
+    outline: none;
+    background-color: #065f24;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    font-size:large;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#scrollToTopBtn:hover {
+    background-color: #028a2b;
 }

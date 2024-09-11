@@ -246,10 +246,6 @@ function applyFilters() {
     document.getElementById('resetFiltersBtn').style.display = 'block';
 
     displayTrees(filteredTrees);
-    
-    // Desplazar suavemente hacia el mapa en dispositivos móviles
-    const mapContainer = document.getElementById('map');
-    mapContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
 
@@ -325,6 +321,22 @@ function selectTree(tree, marker) {
     mapContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
+
+// Mostrar/ocultar el botón al desplazarse
+window.onscroll = function () {
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// Función para desplazarse al inicio de la página
+function scrollToTop() {
+    document.body.scrollTop = 0; // Para Safari
+    document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
+}
 
 
 
@@ -428,6 +440,7 @@ window.hideRoute = hideRoute;
 window.showRoute = showRoute;
 window.showImageModal = showImageModal;
 window.closeModal = closeModal;
+window.scrollToTop = scrollToTop;
 
 
 
