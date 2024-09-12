@@ -418,7 +418,7 @@ function showRoute() {
                 L.latLng(selectedTree.ubicacion.latitude, selectedTree.ubicacion.longitude)
             ],
             routeWhileDragging: true,
-            show: true, // Ocultar las indicaciones de la ruta
+            show: false, // Ocultar las indicaciones de la ruta
             lineOptions: { styles: [{ color: '#14A44D', weight: 6 }] },
             addWaypoints: false,
             draggableWaypoints: false,
