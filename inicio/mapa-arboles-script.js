@@ -82,12 +82,56 @@ async function loadTrees() {
 
 
 //icono personalizado para el marcador de árbol
-const treeIcon = L.icon({
-    iconUrl: '../recursos/tree-pin.svg', // Reemplaza con la URL de tu imagen de árbol
-    iconSize: [64, 60], // Tamaño del icono
-    iconAnchor: [24, 60], // Punto del icono que se corresponde con la ubicación
-    popupAnchor: [0, -60] // Punto desde el cual se muestra el popup respecto al icono
-});
+const icons = {
+    Desconocido: L.icon({
+        iconUrl: '../recursos/desconocido.png', 
+        iconSize: [52, 64], // Tamaño del icono
+        iconAnchor: [26, 64], // Punto del icono que se corresponde con la ubicación
+        popupAnchor: [0, -64] // Punto desde el cual se muestra el popup respecto al icono
+    }),
+    Pino: L.icon({
+        iconUrl: '../recursos/pino.png',
+        iconSize: [52, 64],
+        iconAnchor: [26, 64],
+        popupAnchor: [0, -64]
+    }),
+    Caoba: L.icon({
+        iconUrl: '../recursos/caoba.png',
+        iconSize: [52, 64],
+        iconAnchor: [26, 64],
+        popupAnchor: [0, -64]
+    }),
+    Cedro: L.icon({
+        iconUrl: '../recursos/cedro.png',
+        iconSize: [52, 64],
+        iconAnchor: [26, 64],
+        popupAnchor: [0, -64]
+    }),
+    Roble: L.icon({
+        iconUrl: '../recursos/roble.png',
+        iconSize: [52, 64],
+        iconAnchor: [26, 64],
+        popupAnchor: [0, -64]
+    }),
+    Palma: L.icon({
+        iconUrl: '../recursos/palma.png',
+        iconSize: [52, 64],
+        iconAnchor: [26, 64],
+        popupAnchor: [0, -64]
+    }),
+    Laurel: L.icon({
+        iconUrl: '../recursos/laurel.png',
+        iconSize: [52, 64],
+        iconAnchor: [26, 64],
+        popupAnchor: [0, -64]
+    }),
+    Guanacaste: L.icon({
+        iconUrl: '../recursos/guanacaste.png',
+        iconSize: [52, 64],
+        iconAnchor: [26, 64],
+        popupAnchor: [0, -64]
+    }),
+};
 
 
 
@@ -97,9 +141,9 @@ function displayTrees(treesToShow) {
     const treeList = document.getElementById('treeList');
     treeList.innerHTML = '';
     treesToShow.forEach(tree => {
-        const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], { icon: treeIcon }).addTo(map);
+        const marker = L.marker([tree.ubicacion.latitude, tree.ubicacion.longitude], { icon: icons[tree.especie] }).addTo(map);
 
-        const imageUrl = tree.imagenURL || '../recursos/default-tree.svg'; // Reemplaza con la URL de tu imagen por defecto
+        const imageUrl = tree.imagenURL || `../recursos/${tree.especie.toLowerCase()}.png`; // Reemplaza con la URL de tu imagen por defecto
 
         // Agregar un popup al marcador
         marker.bindPopup(`
@@ -374,7 +418,7 @@ function showRoute() {
                 L.latLng(selectedTree.ubicacion.latitude, selectedTree.ubicacion.longitude)
             ],
             routeWhileDragging: true,
-            show: false, // Ocultar las indicaciones de la ruta
+            show: true, // Ocultar las indicaciones de la ruta
             lineOptions: { styles: [{ color: '#14A44D', weight: 6 }] },
             addWaypoints: false,
             draggableWaypoints: false,
@@ -388,7 +432,7 @@ function showRoute() {
                     return L.marker(wp.latLng).bindPopup('Ubicación actual');
                 } else {
                     const treeMarker = L.marker(wp.latLng, {
-                        icon: treeIcon
+                        icon: icons[selectedTree.especie]
                     }).bindPopup(`<b>${selectedTree.nombre}</b><br>${selectedTree.especie}<br><b>Sembrado el</b> ${selectedTree.fecha.toDate().toLocaleDateString()} a las ${selectedTree.fecha.toDate().toLocaleTimeString()}
             <br><button class="btn btn-danger btn-sm mt-1" onclick="hideRoute()">Ocultar Ruta</button>`);
                     treeMarker.openPopup(); // Abre el popup por defecto
